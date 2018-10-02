@@ -1,12 +1,13 @@
 package com.pragya.assignment3.handler;
 
 import com.pragya.assignment3.controllers.Action;
+import com.pragya.assignment3.exceptions.MyExceptions;
 
 import java.util.Scanner;
 
 public class OperationsHandler {
 
-    public void Operations() {
+    public void Operations() throws MyExceptions {
 
         Scanner scan = new Scanner(System.in);
         char choice;
@@ -25,42 +26,49 @@ public class OperationsHandler {
             //User Input his/her Choice
             System.out.println("Choose any one Operation: ");
             choice = scan.next().charAt(0);
+            Action A=Action.getInstance();
 
             //Using Action class Object(Singleton class) to call methods
             switch (choice) {
                 case '1': {
                     System.out.println("Enter the node ID: ");
 
-                    Action.getInstance().getImmediateParents();
+                    A.getImmediateParents();
                     break;
                 }
                 case '2': {
-                    Action.getInstance().getImmediateChildren();
+                    A.getImmediateChildren();
                     break;
                 }
                 case '3': {
-                    Action.getInstance().getAncestors();
+                    A.getAncestors();
                     break;
                 }
                 case '4': {
-                    Action.getInstance().getDescendants();
+                    A.getDescendants();
                     break;
                 }
                 case '5': {
-                    Action.getInstance().deleteDependency();
+                    A.deleteDependency();
                     break;
                 }
                 case '6': {
-                    Action.getInstance().deleteNode();
+                    A.deleteNode();
                     break;
                 }
                 case '7': {
-                    Action.getInstance().addDependency();
+                    A.addDependency();
                     break;
                 }
                 case '8': {
-                    Action.getInstance().addNode();
+                    A.addNode();
                     break;
+                }
+                case '9':{
+                    A.print();
+                    break;
+
+
                 }
                 default: {
                     System.out.println("Inappropriate Operation Chosen");
