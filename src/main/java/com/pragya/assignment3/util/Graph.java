@@ -60,7 +60,7 @@ public class Graph {
 
             checkDependency(nodeId, childtId);
         }
-        print();
+      //  print();
 
     }
     public void addDependency(Integer parentId , Integer childId) throws MyExceptions {
@@ -74,7 +74,7 @@ public class Graph {
     public void addEdge(Integer parentId,Integer childId)
     {
         this.graph[parentId].add(Node.hm.get(childId));
-        System.out.println(graph[parentId].size()+" here\n");
+     //   System.out.println(graph[parentId].size()+" here\n");
     }
 
     public void removeEdge(Integer parentId,Integer childId)
@@ -244,12 +244,19 @@ public class Graph {
 
     public void deleteNodeUtil(Integer nodeId)
     {
-        System.out.println(nodeId+ "\n");
+//        System.out.println(nodeId);
+//
+//
+//        Iterator<Integer> it = set.iterator();
+//        while(it.hasNext()){
+//            System.out.print(it.next()+" ");
+//        }
+//        System.out.println("------------------\n");
         for(int  i =0;i<parentGraph[nodeId].size();i++)
         {
 
             removeEdge(parentGraph[nodeId].get(i).getId(),nodeId);
-            System.out.println(parentGraph[nodeId].get(i).getId()+" ");
+           // System.out.println(parentGraph[nodeId].get(i).getId()+" ");
         }
         parentGraph[nodeId].clear();
 
@@ -266,10 +273,13 @@ public class Graph {
         {
             if(parentGraph[temp.get(i)].size()==1)
             {
-               set.add(temp.get(i));
-             //   deleteNodeUtil(temp.get(i));
+                if(!set.contains(temp.get(i))) {
+                    set.add(temp.get(i));
 
-                toBeDelete.add(temp.get(i));
+                    //   deleteNodeUtil(temp.get(i));
+
+                    toBeDelete.add(temp.get(i));
+                }
             }
             else {
                 boolean flag = true;
@@ -281,8 +291,12 @@ public class Graph {
                 }
                 if (flag)
                 {
-                   set.add(temp.get(i));
-                    toBeDelete.add(temp.get(i));
+                    if(!set.contains(temp.get(i))) {
+
+
+                        set.add(temp.get(i));
+                        toBeDelete.add(temp.get(i));
+                    }
 
                     //deleteNodeUtil(temp.get(i));
                 }
@@ -326,32 +340,32 @@ public class Graph {
             System.out.println("\n");
 
         }
-        for(int i=0;i<9;i++)
-        {
-            System.out.println(i+"-->");
-            for(int j=0;j<parentGraph[i].size();j++)
-            {
-                System.out.println(parentGraph[i].get(j).getId()+" ");
-            }
-            System.out.println("\n");
-
-        }
+//        for(int i=0;i<9;i++)
+//        {
+//            System.out.println(i+"-->");
+//            for(int j=0;j<parentGraph[i].size();j++)
+//            {
+//                System.out.println(parentGraph[i].get(j).getId()+" ");
+//            }
+//            System.out.println("\n");
+//
+//        }
 
     }
 
 
-    void printUtil(Integer nodeId)
-    {
-        visited[nodeId]=true;
-
-        System.out.println(nodeId+": -->");
-        for(int i=0;i<graph[nodeId].size();i++)
-        {
-            if(visited[graph[nodeId].get(i).getId()]==false)
-                printUtil(graph[nodeId].get(i).getId());
-
-        }
-    }
+//    void printUtil(Integer nodeId)
+//    {
+//        visited[nodeId]=true;
+//
+//        System.out.println(nodeId+": -->");
+//        for(int i=0;i<graph[nodeId].size();i++)
+//        {
+//            if(visited[graph[nodeId].get(i).getId()]==false)
+//                printUtil(graph[nodeId].get(i).getId());
+//
+//        }
+//    }
 
 
 }
