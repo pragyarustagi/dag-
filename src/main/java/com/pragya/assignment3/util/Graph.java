@@ -2,10 +2,7 @@ package com.pragya.assignment3.util;
 
 import com.pragya.assignment3.exceptions.MyExceptions;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Scanner;
+import java.util.*;
 
 public class Graph {
 
@@ -14,6 +11,7 @@ public class Graph {
 
       ArrayList<Node> graph [] = new ArrayList[100];
     ArrayList<Node> parentGraph [] = new ArrayList[100];
+    Set<Integer> set = new HashSet<Integer>();
 
       Scanner scanner= new Scanner(System.in);
     private Boolean[] recursionstack;
@@ -168,7 +166,7 @@ public class Graph {
     public ArrayList<Node> getImmediateParents(Integer nodeId)
     {
         ArrayList<Node> parents = new ArrayList<Node>();
-        for(int i=0;i<100;i++)
+        for(int i=0;i<50;i++)
         {
             for(int j= 0;j<graph[i].size();j++)
             {
@@ -231,7 +229,7 @@ public class Graph {
             if(visited[parentGraph[nodeId].get(i).getId()]==false)
             {
                 ancestors.add(parentGraph[nodeId].get(i));
-                dfs(parentGraph[nodeId].get(i).getId(),ancestors);
+                dfsOnParentGraph(parentGraph[nodeId].get(i).getId(),ancestors);
             }
         }
 
@@ -239,30 +237,65 @@ public class Graph {
 
     public void deleteNode(Integer nodeId)
     {
+        set.clear();
+        set.add(nodeId);
+        deleteNodeUtil(nodeId);
+    }
+
+    public void deleteNodeUtil(Integer nodeId)
+    {
         System.out.println(nodeId+ "\n");
-       for(int  i =0;i<parentGraph[nodeId].size();i++)
-       {
+        for(int  i =0;i<parentGraph[nodeId].size();i++)
+        {
 
             removeEdge(parentGraph[nodeId].get(i).getId(),nodeId);
-           System.out.println(parentGraph[nodeId].get(i).getId()+" ");
-       }
-       parentGraph[nodeId].clear();
+            System.out.println(parentGraph[nodeId].get(i).getId()+" ");
+        }
+        parentGraph[nodeId].clear();
 
-       ArrayList<Integer> temp= new ArrayList<Integer>();
+        ArrayList<Integer> temp= new ArrayList<Integer>();
 
-       for(int i=0;i<graph[nodeId].size();i++)
-       {
-           temp.add(graph[nodeId].get(i).getId());
-       }
+        for(int i=0;i<graph[nodeId].size();i++)
+        {
+            temp.add(graph[nodeId].get(i).getId());
+          //  set.add(graph[nodeId].get(i).getId());
+        }
+        List<Integer> toBeDelete =new ArrayList<Integer>();
 
-       for(int i=0;i<temp.size();i++)
-       {
-           if(parentGraph[temp.get(i)].size()==1)
-           {
-               deleteNode(temp.get(i));
-           }
-           removeEdge(nodeId,temp.get(i));
-       }
+        for(int i=0;i<temp.size();i++)
+        {
+            if(parentGraph[temp.get(i)].size()==1)
+            {
+               set.add(temp.get(i));
+             //   deleteNodeUtil(temp.get(i));
+
+                toBeDelete.add(temp.get(i));
+            }
+            else {
+                boolean flag = true;
+                for (int j = 0; j < parentGraph[temp.get(i)].size(); j++) {
+                    if (!set.contains(parentGraph[temp.get(i)].get(j).getId())) {
+                        flag = false;
+                        break;
+                    }
+                }
+                if (flag)
+                {
+                   set.add(temp.get(i));
+                    toBeDelete.add(temp.get(i));
+
+                    //deleteNodeUtil(temp.get(i));
+                }
+
+            }
+
+            removeEdge(nodeId,temp.get(i));
+        }
+        for(int i=0;i<toBeDelete.size();i++)
+        {
+            deleteNodeUtil(temp.get(i));
+            //8removeEdge(nodeId,temp.get(i));
+        }
     }
 
     public void deleteDependency(Integer parentId ,Integer childId)
@@ -283,7 +316,7 @@ public class Graph {
         //printUtil(1);
 
 
-        for(int i=0;i<7;i++)
+        for(int i=0;i<9;i++)
         {
             System.out.println(i+"-->");
             for(int j=0;j<graph[i].size();j++)
@@ -293,7 +326,19 @@ public class Graph {
             System.out.println("\n");
 
         }
+        for(int i=0;i<9;i++)
+        {
+            System.out.println(i+"-->");
+            for(int j=0;j<parentGraph[i].size();j++)
+            {
+                System.out.println(parentGraph[i].get(j).getId()+" ");
+            }
+            System.out.println("\n");
+
+        }
+
     }
+
 
     void printUtil(Integer nodeId)
     {
